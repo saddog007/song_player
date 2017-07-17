@@ -8,9 +8,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+	backpic = new BackPic(this);   //背景设置界面
 	connect(ui->min_btn, SIGNAL(clicked()), this, SLOT(minWindow()));
 	connect(ui->close_btn, SIGNAL(clicked()), this, SLOT(closeWindow()));
 	connect(ui->back_btn, SIGNAL(clicked()), this, SLOT(backPicshow()));
+	connect(backpic, SIGNAL(back_pic_id(QString)), this, SLOT(back_change(QString)));
 	WindowStyle();
 }
 
@@ -86,8 +88,23 @@ void MainWindow::closeWindow()
 
 void MainWindow::backPicshow()
 {
-
+	if (backpic->isHidden())
+	{
+		backpic->show();
+		backpic->setGeometry(this->geometry().x() + 20, this->geometry().y()+50, 290, 380);  //设置界面位置
+	}
+	else
+	{
+		backpic->hide();
+	}
 }
+
+void MainWindow::back_change(QString id)
+{
+	QString backpicname = QString("background") + id;
+	setBk(backpicname);
+}
+
 void MainWindow::setBk(QString picname)
 {
 	QPalette p;

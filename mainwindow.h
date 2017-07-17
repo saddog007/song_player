@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTextCodec>
+#include "backpic.h"
 
 namespace Ui {
 class MainWindow;
@@ -15,6 +16,11 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+	BackPic *backpic;
+
+public slots:
+	void back_change(QString id);   //界面改变id信号
 
 private slots:
 	void WindowStyle();
