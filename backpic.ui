@@ -19,8 +19,20 @@
      <x>40</x>
      <y>40</y>
      <width>211</width>
-     <height>221</height>
+     <height>231</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QWidget{background:white;border-image:NULL}
+QScrollBar{background:white; width: 10px;margin: 10px 0 10px 0;}
+QScrollBar::handle{background:rgb(165,165,165); border:0px solid transparent; border-radius:4px;}
+QScrollBar::handle:hover{background:rgb(77,77,77); border-radius:4px;}
+QScrollBar::add-line:vertical {background:gray;border-image: url(:/images/image/down.png); height: 10px; subcontrol-position: bottom;subcontrol-origin: margin;}
+QScrollBar::sub-line:vertical {background:gray;border-image: url(:/images/image/top.png);height: 10px;subcontrol-position: top;subcontrol-origin: margin;}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {background:white;}</string>
    </property>
    <property name="verticalScrollBarPolicy">
     <enum>Qt::ScrollBarAlwaysOn</enum>
@@ -33,103 +45,150 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>188</width>
-      <height>219</height>
+      <width>199</width>
+      <height>229</height>
      </rect>
     </property>
     <widget class="QToolButton" name="btn1">
      <property name="geometry">
       <rect>
-       <x>25</x>
-       <y>10</y>
-       <width>140</width>
-       <height>35</height>
+       <x>15</x>
+       <y>0</y>
+       <width>50</width>
+       <height>110</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>SimSun-ExtB</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>绿野仙踪</string>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgba(255, 0, 0, 200);
-color: rgba(85, 255, 96, 255);
-font: 12pt &quot;Arial&quot;;
-border-radius:12px;</string>
+      <string notr="true"/>
      </property>
      <property name="text">
-      <string>绿野仙踪</string>
+      <string/>
+     </property>
+     <property name="autoRaise">
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="QToolButton" name="btn2">
      <property name="geometry">
       <rect>
-       <x>25</x>
-       <y>50</y>
-       <width>140</width>
-       <height>35</height>
+       <x>75</x>
+       <y>0</y>
+       <width>50</width>
+       <height>110</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>幽夜暗香</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>-1</number>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgba(255, 0, 0, 200);
-color: rgba(85, 255, 96, 255);
-font: 12pt &quot;Arial&quot;;
-border-radius:12px;</string>
+      <string notr="true"/>
      </property>
      <property name="text">
-      <string>幽夜暗香</string>
+      <string/>
+     </property>
+     <property name="autoRaise">
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="QToolButton" name="btn3">
      <property name="geometry">
       <rect>
-       <x>25</x>
-       <y>90</y>
-       <width>140</width>
-       <height>35</height>
+       <x>135</x>
+       <y>0</y>
+       <width>50</width>
+       <height>110</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>夏日心情</string>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgba(255, 0, 0, 200);
-color: rgba(85, 255, 96, 255);
-font: 12pt &quot;Arial&quot;;
-border-radius:12px;</string>
+      <string notr="true"/>
      </property>
      <property name="text">
-      <string>夏日心情</string>
+      <string/>
+     </property>
+     <property name="autoRaise">
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="QToolButton" name="btn4">
      <property name="geometry">
       <rect>
-       <x>25</x>
-       <y>130</y>
-       <width>140</width>
-       <height>35</height>
+       <x>15</x>
+       <y>120</y>
+       <width>50</width>
+       <height>110</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>美女凝视</string>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgba(255, 0, 0, 200);
-color: rgba(85, 255, 96, 255);
-font: 12pt &quot;Arial&quot;;
-border-radius:12px;</string>
+      <string notr="true"/>
      </property>
      <property name="text">
-      <string>美女凝视</string>
+      <string/>
+     </property>
+     <property name="autoRaise">
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="QToolButton" name="btn5">
      <property name="geometry">
       <rect>
-       <x>25</x>
-       <y>170</y>
-       <width>140</width>
-       <height>35</height>
+       <x>75</x>
+       <y>120</y>
+       <width>50</width>
+       <height>110</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>可爱动人</string>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgba(255, 0, 0, 200);
-color: rgba(85, 255, 96, 255);
-font: 12pt &quot;Arial&quot;;
-border-radius:12px;</string>
+      <string notr="true"/>
      </property>
      <property name="text">
-      <string>可爱动人</string>
+      <string/>
+     </property>
+     <property name="autoRaise">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
@@ -138,10 +197,13 @@ border-radius:12px;</string>
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>10</y>
+     <y>20</y>
      <width>211</width>
-     <height>16</height>
+     <height>2</height>
     </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -151,10 +213,13 @@ border-radius:12px;</string>
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>280</y>
+     <y>290</y>
      <width>211</width>
-     <height>16</height>
+     <height>2</height>
     </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -189,8 +254,8 @@ border-radius:12px;</string>
     <item>
      <widget class="QLabel" name="label">
       <property name="styleSheet">
-       <string notr="true">
-color: rgb(255, 0, 0);</string>
+       <string notr="true">color: rgb(85, 0, 255);
+</string>
       </property>
       <property name="text">
        <string>列表透明度</string>

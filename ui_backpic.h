@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'backpicp12896.ui'
+** Form generated from reading UI file 'backpicmU6460.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef BACKPICP12896_H
-#define BACKPICP12896_H
+#ifndef BACKPICMU6460_H
+#define BACKPICMU6460_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -50,58 +50,69 @@ public:
         BackPic->resize(290, 380);
         scrollArea = new QScrollArea(BackPic);
         scrollArea->setObjectName(QStringLiteral("scrollArea"));
-        scrollArea->setGeometry(QRect(40, 40, 211, 221));
+        scrollArea->setGeometry(QRect(40, 40, 211, 231));
+        scrollArea->setStyleSheet(QLatin1String("QWidget{background:white;border-image:NULL}\n"
+"QScrollBar{background:white; width: 10px;margin: 10px 0 10px 0;}\n"
+"QScrollBar::handle{background:rgb(165,165,165); border:0px solid transparent; border-radius:4px;}\n"
+"QScrollBar::handle:hover{background:rgb(77,77,77); border-radius:4px;}\n"
+"QScrollBar::add-line:vertical {background:gray;border-image: url(:/images/image/down.png); height: 10px; subcontrol-position: bottom;subcontrol-origin: margin;}\n"
+"QScrollBar::sub-line:vertical {background:gray;border-image: url(:/images/image/top.png);height: 10px;subcontrol-position: top;subcontrol-origin: margin;}\n"
+"QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {background:white;}"));
         scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 188, 219));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 199, 229));
         btn1 = new QToolButton(scrollAreaWidgetContents);
         btn1->setObjectName(QStringLiteral("btn1"));
-        btn1->setGeometry(QRect(25, 10, 140, 35));
-        btn1->setStyleSheet(QLatin1String("background-color: rgba(255, 0, 0, 200);\n"
-"color: rgba(85, 255, 96, 255);\n"
-"font: 12pt \"Arial\";\n"
-"border-radius:12px;"));
+        btn1->setGeometry(QRect(15, 0, 50, 110));
+        QFont font;
+        font.setFamily(QStringLiteral("SimSun-ExtB"));
+        font.setPointSize(12);
+        font.setBold(false);
+        font.setItalic(false);
+        font.setWeight(50);
+        btn1->setFont(font);
+        btn1->setStyleSheet(QStringLiteral(""));
+        btn1->setAutoRaise(true);
         btn2 = new QToolButton(scrollAreaWidgetContents);
         btn2->setObjectName(QStringLiteral("btn2"));
-        btn2->setGeometry(QRect(25, 50, 140, 35));
-        btn2->setStyleSheet(QLatin1String("background-color: rgba(255, 0, 0, 200);\n"
-"color: rgba(85, 255, 96, 255);\n"
-"font: 12pt \"Arial\";\n"
-"border-radius:12px;"));
+        btn2->setGeometry(QRect(75, 0, 50, 110));
+        QFont font1;
+        font1.setPointSize(12);
+        btn2->setFont(font1);
+        btn2->setToolTipDuration(-1);
+        btn2->setStyleSheet(QStringLiteral(""));
+        btn2->setAutoRaise(true);
         btn3 = new QToolButton(scrollAreaWidgetContents);
         btn3->setObjectName(QStringLiteral("btn3"));
-        btn3->setGeometry(QRect(25, 90, 140, 35));
-        btn3->setStyleSheet(QLatin1String("background-color: rgba(255, 0, 0, 200);\n"
-"color: rgba(85, 255, 96, 255);\n"
-"font: 12pt \"Arial\";\n"
-"border-radius:12px;"));
+        btn3->setGeometry(QRect(135, 0, 50, 110));
+        btn3->setFont(font1);
+        btn3->setStyleSheet(QStringLiteral(""));
+        btn3->setAutoRaise(true);
         btn4 = new QToolButton(scrollAreaWidgetContents);
         btn4->setObjectName(QStringLiteral("btn4"));
-        btn4->setGeometry(QRect(25, 130, 140, 35));
-        btn4->setStyleSheet(QLatin1String("background-color: rgba(255, 0, 0, 200);\n"
-"color: rgba(85, 255, 96, 255);\n"
-"font: 12pt \"Arial\";\n"
-"border-radius:12px;"));
+        btn4->setGeometry(QRect(15, 120, 50, 110));
+        btn4->setFont(font1);
+        btn4->setStyleSheet(QStringLiteral(""));
+        btn4->setAutoRaise(true);
         btn5 = new QToolButton(scrollAreaWidgetContents);
         btn5->setObjectName(QStringLiteral("btn5"));
-        btn5->setGeometry(QRect(25, 170, 140, 35));
-        btn5->setStyleSheet(QLatin1String("background-color: rgba(255, 0, 0, 200);\n"
-"color: rgba(85, 255, 96, 255);\n"
-"font: 12pt \"Arial\";\n"
-"border-radius:12px;"));
+        btn5->setGeometry(QRect(75, 120, 50, 110));
+        btn5->setFont(font1);
+        btn5->setStyleSheet(QStringLiteral(""));
+        btn5->setAutoRaise(true);
         scrollArea->setWidget(scrollAreaWidgetContents);
         line = new QFrame(BackPic);
         line->setObjectName(QStringLiteral("line"));
-        line->setGeometry(QRect(40, 10, 211, 16));
+        line->setGeometry(QRect(40, 20, 211, 2));
+        line->setFrameShadow(QFrame::Plain);
         line->setFrameShape(QFrame::HLine);
-        line->setFrameShadow(QFrame::Sunken);
         line_2 = new QFrame(BackPic);
         line_2->setObjectName(QStringLiteral("line_2"));
-        line_2->setGeometry(QRect(40, 280, 211, 16));
+        line_2->setGeometry(QRect(40, 290, 211, 2));
+        line_2->setFrameShadow(QFrame::Plain);
         line_2->setFrameShape(QFrame::HLine);
-        line_2->setFrameShadow(QFrame::Sunken);
         close_btn = new QToolButton(BackPic);
         close_btn->setObjectName(QStringLiteral("close_btn"));
         close_btn->setGeometry(QRect(265, 0, 21, 21));
@@ -114,8 +125,8 @@ public:
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
         label = new QLabel(layoutWidget);
         label->setObjectName(QStringLiteral("label"));
-        label->setStyleSheet(QLatin1String("\n"
-"color: rgb(255, 0, 0);"));
+        label->setStyleSheet(QLatin1String("color: rgb(85, 0, 255);\n"
+""));
 
         horizontalLayout->addWidget(label);
 
@@ -134,11 +145,29 @@ public:
     void retranslateUi(QDialog *BackPic)
     {
         BackPic->setWindowTitle(QApplication::translate("BackPic", "Dialog", 0));
-        btn1->setText(QApplication::translate("BackPic", "\347\273\277\351\207\216\344\273\231\350\270\252", 0));
-        btn2->setText(QApplication::translate("BackPic", "\345\271\275\345\244\234\346\232\227\351\246\231", 0));
-        btn3->setText(QApplication::translate("BackPic", "\345\244\217\346\227\245\345\277\203\346\203\205", 0));
-        btn4->setText(QApplication::translate("BackPic", "\347\276\216\345\245\263\345\207\235\350\247\206", 0));
-        btn5->setText(QApplication::translate("BackPic", "\345\217\257\347\210\261\345\212\250\344\272\272", 0));
+#ifndef QT_NO_TOOLTIP
+        scrollArea->setToolTip(QString());
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_TOOLTIP
+        btn1->setToolTip(QApplication::translate("BackPic", "\347\273\277\351\207\216\344\273\231\350\270\252", 0));
+#endif // QT_NO_TOOLTIP
+        btn1->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        btn2->setToolTip(QApplication::translate("BackPic", "\345\271\275\345\244\234\346\232\227\351\246\231", 0));
+#endif // QT_NO_TOOLTIP
+        btn2->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        btn3->setToolTip(QApplication::translate("BackPic", "\345\244\217\346\227\245\345\277\203\346\203\205", 0));
+#endif // QT_NO_TOOLTIP
+        btn3->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        btn4->setToolTip(QApplication::translate("BackPic", "\347\276\216\345\245\263\345\207\235\350\247\206", 0));
+#endif // QT_NO_TOOLTIP
+        btn4->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        btn5->setToolTip(QApplication::translate("BackPic", "\345\217\257\347\210\261\345\212\250\344\272\272", 0));
+#endif // QT_NO_TOOLTIP
+        btn5->setText(QString());
         close_btn->setText(QString());
         label->setText(QApplication::translate("BackPic", "\345\210\227\350\241\250\351\200\217\346\230\216\345\272\246", 0));
     } // retranslateUi
@@ -151,4 +180,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // BACKPICP12896_H
+#endif // BACKPICMU6460_H

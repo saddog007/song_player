@@ -13,6 +13,11 @@ BackPic::BackPic(QWidget *parent) :
 	QPalette p;
 	p.setBrush(QPalette::Background, QBrush(QPixmap(":/images/image/bg1.jpg")));
 	setPalette(p);
+	ui->btn1->setStyleSheet("QToolButton{border-image: url(:/images/image/background1.png);}QToolTip{background-color:white}");
+	ui->btn2->setStyleSheet("QToolButton{border-image: url(:/images/image/background2.png);}QToolTip{background-color:white}");
+	ui->btn3->setStyleSheet("QToolButton{border-image: url(:/images/image/background3.png);}QToolTip{background-color:white}");
+	ui->btn4->setStyleSheet("QToolButton{border-image: url(:/images/image/background4.png);}QToolTip{background-color:white}");
+	ui->btn5->setStyleSheet("QToolButton{border-image: url(:/images/image/background5.png);}QToolTip{background-color:white}");
 
 	signalmapper = new QSignalMapper(this);
 
