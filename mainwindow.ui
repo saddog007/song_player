@@ -144,7 +144,7 @@ font: 10pt &quot;Arial&quot;;</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>50</y>
+      <y>60</y>
       <width>221</width>
       <height>22</height>
      </rect>
@@ -157,7 +157,7 @@ font: 10pt &quot;Arial&quot;;</string>
     <property name="geometry">
      <rect>
       <x>240</x>
-      <y>65</y>
+      <y>75</y>
       <width>85</width>
       <height>18</height>
      </rect>
@@ -208,7 +208,7 @@ font: 10pt &quot;微软雅黑&quot;;</string>
     <property name="geometry">
      <rect>
       <x>240</x>
-      <y>90</y>
+      <y>99</y>
       <width>80</width>
       <height>20</height>
      </rect>
@@ -221,7 +221,7 @@ font: 10pt &quot;微软雅黑&quot;;</string>
     <property name="geometry">
      <rect>
       <x>217</x>
-      <y>89</y>
+      <y>99</y>
       <width>20</width>
       <height>20</height>
      </rect>
@@ -586,9 +586,9 @@ color: rgb(255, 255, 255);</string>
    <widget class="QComboBox" name="play_model">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>257</x>
       <y>150</y>
-      <width>70</width>
+      <width>73</width>
       <height>22</height>
      </rect>
     </property>
@@ -602,9 +602,11 @@ color: rgb(255, 255, 255);</string>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-font: 7pt &quot;Arial&quot;;
-background-color:transparent;</string>
+     <string notr="true">background-color: rgba(255, 255, 255, 0);
+border-color: rgba(255, 255, 255, 0);
+selection-background-color: rgba(255, 255, 255, 0);
+QToolTip{background-color:white;color:black;};
+</string>
     </property>
     <property name="iconSize">
      <size>
@@ -612,6 +614,85 @@ background-color:transparent;</string>
       <height>20</height>
      </size>
     </property>
+   </widget>
+   <widget class="QLabel" name="song_show">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>35</y>
+      <width>330</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgba(255, 255, 255, 0);
+font:10pt &quot;微软雅黑&quot;;
+color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QWidget" name="widget_search" native="true">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>620</y>
+      <width>240</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,10,1">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="styleSheet">
+        <string notr="true">border-image: url(:/images/image/search_16.ico);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="search_lineEdit">
+       <property name="styleSheet">
+        <string notr="true">background-color:transparent;</string>
+       </property>
+       <property name="placeholderText">
+        <string>查找列表歌曲</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="search_close">
+       <property name="styleSheet">
+        <string notr="true">border-image: url(:/images/image/searchclose.ico);
+background-color:transparent;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
    <zorder>listWidget</zorder>
    <zorder>layoutWidget</zorder>
@@ -637,6 +718,10 @@ background-color:transparent;</string>
    <zorder>local_btn</zorder>
    <zorder>playmode_btn</zorder>
    <zorder>play_model</zorder>
+   <zorder>song_show</zorder>
+   <zorder>label_5</zorder>
+   <zorder>search_lineEdit</zorder>
+   <zorder>search_close</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

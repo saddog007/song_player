@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'mainwindownZ7796.ui'
+** Form generated from reading UI file 'mainwindowgP8232.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef MAINWINDOWNZ7796_H
-#define MAINWINDOWNZ7796_H
+#ifndef MAINWINDOWGP8232_H
+#define MAINWINDOWGP8232_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -19,6 +19,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QSlider>
@@ -59,6 +60,12 @@ public:
     QToolButton *local_btn;
     QToolButton *playmode_btn;
     QComboBox *play_model;
+    QLabel *song_show;
+    QWidget *widget_search;
+    QHBoxLayout *horizontalLayout;
+    QLabel *label_5;
+    QLineEdit *search_lineEdit;
+    QToolButton *search_close;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -120,11 +127,11 @@ public:
 "font: 10pt \"Arial\";"));
         play_progress_bar = new QSlider(centralWidget);
         play_progress_bar->setObjectName(QStringLiteral("play_progress_bar"));
-        play_progress_bar->setGeometry(QRect(10, 50, 221, 22));
+        play_progress_bar->setGeometry(QRect(10, 60, 221, 22));
         play_progress_bar->setOrientation(Qt::Horizontal);
         time_show = new QLabel(centralWidget);
         time_show->setObjectName(QStringLiteral("time_show"));
-        time_show->setGeometry(QRect(240, 65, 85, 18));
+        time_show->setGeometry(QRect(240, 75, 85, 18));
         time_show->setStyleSheet(QString::fromUtf8("font: 8pt \"\345\276\256\350\275\257\351\233\205\351\273\221\";\n"
 "color: rgb(255, 255, 255);\n"
 "background:transparent;"));
@@ -139,11 +146,11 @@ public:
 "font: 10pt \"\345\276\256\350\275\257\351\233\205\351\273\221\";"));
         volume_progress_bar = new QSlider(centralWidget);
         volume_progress_bar->setObjectName(QStringLiteral("volume_progress_bar"));
-        volume_progress_bar->setGeometry(QRect(240, 90, 80, 20));
+        volume_progress_bar->setGeometry(QRect(240, 99, 80, 20));
         volume_progress_bar->setOrientation(Qt::Horizontal);
         volume_label = new QLabel(centralWidget);
         volume_label->setObjectName(QStringLiteral("volume_label"));
-        volume_label->setGeometry(QRect(217, 89, 20, 20));
+        volume_label->setGeometry(QRect(217, 99, 20, 20));
         volume_label->setStyleSheet(QLatin1String("border-image: url(:/images/image/volume_step.png);\n"
 "border-image: url(:/images/image/volume.png);\n"
 "border-image: url(:/images/image/volume_shut.png);"));
@@ -256,7 +263,7 @@ public:
         playmode_btn->setAutoRaise(true);
         play_model = new QComboBox(centralWidget);
         play_model->setObjectName(QStringLiteral("play_model"));
-        play_model->setGeometry(QRect(260, 150, 70, 22));
+        play_model->setGeometry(QRect(257, 150, 73, 22));
         QFont font1;
         font1.setFamily(QStringLiteral("Arial"));
         font1.setPointSize(7);
@@ -264,10 +271,49 @@ public:
         font1.setItalic(false);
         font1.setWeight(50);
         play_model->setFont(font1);
-        play_model->setStyleSheet(QLatin1String("color: rgb(255, 255, 255);\n"
-"font: 7pt \"Arial\";\n"
-"background-color:transparent;"));
+        play_model->setStyleSheet(QLatin1String("background-color: rgba(255, 255, 255, 0);\n"
+"border-color: rgba(255, 255, 255, 0);\n"
+"selection-background-color: rgba(255, 255, 255, 0);\n"
+"QToolTip{background-color:white;color:black;};\n"
+""));
         play_model->setIconSize(QSize(10, 20));
+        song_show = new QLabel(centralWidget);
+        song_show->setObjectName(QStringLiteral("song_show"));
+        song_show->setGeometry(QRect(0, 35, 330, 20));
+        song_show->setStyleSheet(QString::fromUtf8("background-color: rgba(255, 255, 255, 0);\n"
+"font:10pt \"\345\276\256\350\275\257\351\233\205\351\273\221\";\n"
+"color: rgb(255, 255, 255);"));
+        widget_search = new QWidget(centralWidget);
+        widget_search->setObjectName(QStringLiteral("widget_search"));
+        widget_search->setGeometry(QRect(90, 620, 240, 23));
+        horizontalLayout = new QHBoxLayout(widget_search);
+        horizontalLayout->setSpacing(0);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        label_5 = new QLabel(widget_search);
+        label_5->setObjectName(QStringLiteral("label_5"));
+        label_5->setStyleSheet(QStringLiteral("border-image: url(:/images/image/search_16.ico);"));
+
+        horizontalLayout->addWidget(label_5);
+
+        search_lineEdit = new QLineEdit(widget_search);
+        search_lineEdit->setObjectName(QStringLiteral("search_lineEdit"));
+        search_lineEdit->setStyleSheet(QStringLiteral("background-color:transparent;"));
+
+        horizontalLayout->addWidget(search_lineEdit);
+
+        search_close = new QToolButton(widget_search);
+        search_close->setObjectName(QStringLiteral("search_close"));
+        search_close->setStyleSheet(QLatin1String("border-image: url(:/images/image/searchclose.ico);\n"
+"background-color:transparent;"));
+        search_close->setAutoRaise(true);
+
+        horizontalLayout->addWidget(search_close);
+
+        horizontalLayout->setStretch(0, 1);
+        horizontalLayout->setStretch(1, 10);
+        horizontalLayout->setStretch(2, 1);
         MainWindow->setCentralWidget(centralWidget);
         listWidget->raise();
         layoutWidget->raise();
@@ -293,6 +339,10 @@ public:
         local_btn->raise();
         playmode_btn->raise();
         play_model->raise();
+        song_show->raise();
+        label_5->raise();
+        search_lineEdit->raise();
+        search_close->raise();
 
         retranslateUi(MainWindow);
 
@@ -340,6 +390,10 @@ public:
         search_btn->setText(QString());
         local_btn->setText(QString());
         playmode_btn->setText(QString());
+        song_show->setText(QString());
+        label_5->setText(QString());
+        search_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\346\237\245\346\211\276\345\210\227\350\241\250\346\255\214\346\233\262", 0));
+        search_close->setText(QString());
     } // retranslateUi
 
 };
@@ -350,4 +404,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // MAINWINDOWNZ7796_H
+#endif // MAINWINDOWGP8232_H
