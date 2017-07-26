@@ -11,15 +11,18 @@ MainWindow::MainWindow(QWidget *parent) :
 	backpic = new BackPic(this);   //背景设置界面
 	player = new QMediaPlayer;
 	m_timer = new QTimer(this);    //设置实现滚动效果的定时器
-
+	songs_time = new QTimer(this);   //歌曲数目定时器
+	song_tips = new QTimer(this);     //列表歌曲提示信息及无歌设置
+	
 	stack = new QStackedWidget(this);
 	mytable = new Mymaintable(stack);   //添加widget
 	stack->addWidget(mytable);        //添加tablewidget主界面
 	stack->setGeometry(90, 192, 240, 451);
 
-	ui->widget_search->raise();   //查找界面位于最上层
-	ui->widget_search->hide();    //查找界面隐藏
-
+	//列表无歌曲提示信息
+	addtips = new QLabel(QStringLiteral("  点击按钮添加\n或拖动文件到界面"), mytable);
+	addtips->setGeometry(50, 192, 240, 50);
+	addtips->setStyleSheet("color:white;font-size:18px;font-family:微软雅黑");  
 
 	QDir dir0("G://saddog//song_lyrics");   //创建歌词文件夹
 	if (!dir0.exists())
@@ -36,12 +39,23 @@ MainWindow::MainWindow(QWidget *parent) :
 	{
 		dir2.mkdir("G://saddog//song_pic");
 	}
+	QFile fileconfig("config.ini");              //创建退出保存设置文件
+	if (!fileconfig.exists())
+	{
+		if (!fileconfig.open(QFile::WriteOnly | QFile::Text))
+		{
+			return;
+		}
+		fileconfig.close();
+	}
 
 	connect(ui->min_btn, SIGNAL(clicked()), this, SLOT(minWindow()));
 	connect(ui->close_btn, SIGNAL(clicked()), this, SLOT(closeWindow()));
 	connect(ui->back_btn, SIGNAL(clicked()), this, SLOT(backPicshow()));
 	connect(backpic, SIGNAL(back_pic_id(QString)), this, SLOT(backChange(QString)));
 	connect(ui->play_or_suspend, SIGNAL(clicked()), this, SLOT(playOrsuspend()));
+	connect(ui->last_song, SIGNAL(clicked()), this, SLOT(lastSong()));
+	connect(ui->next_song, SIGNAL(clicked()), this, SLOT(nextSong()));
 	connect(ui->volume_progress_bar, SIGNAL(valueChanged(int)), this, SLOT(volPicchange(int)));  //音量图片改变
 	connect(ui->volume_progress_bar, SIGNAL(sliderMoved(int)), this, SLOT(volPicchange(int)));
 	connect(ui->volume_progress_bar, SIGNAL(valueChanged(int)), player, SLOT(setVolume(int)));  //传递给播放器
@@ -51,9 +65,18 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(mytable, SIGNAL(itemDoubleClicked(QTableWidgetItem *)), this, SLOT(mytableDoubleclick(QTableWidgetItem*)));   //界面双击播放
 	connect(ui->add_btn, SIGNAL(clicked()), this, SLOT(addFile()));        //添加歌曲函数
 	connect(ui->play_progress_bar, SIGNAL(sliderMoved(int)), this, SLOT(setPosition(int)));   //播放进度改变函数
+	connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));    //获取歌曲时长和歌曲匹配
+	connect(player, SIGNAL(durationChanged(qint64)), this, SLOT(durationChanged(qint64)));    //获取歌曲当前播放时间
+	connect(ui->volume_label, SIGNAL(clicked()), this, SLOT(volChanged()));     //设置音量是否静音
+	connect(songs_time, SIGNAL(timeout()), this, SLOT(showSongnum()));         //实时显示歌曲数量
+	connect(song_tips, SIGNAL(timeout()), this, SLOT(showTips()));             //无歌提示
+	connect(player, SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(showPlaylabel(QMediaContent)));  //显示正在播放的歌曲
+	connect(ui->search_btn, SIGNAL(clicked()), this, SLOT(searchSong()));      //查找歌曲
+	connect(ui->search_close, SIGNAL(clicked()), this, SLOT(searchClose()));    //关闭查找
+	connect(ui->search_lineEdit, SIGNAL(textChanged(QString)), this, SLOT(searchItems(QString)));  //查找函数
 
-	WindowStyle();  //窗口部件设置
 	systemIcon();   //系统图标设置
+	WindowStyle();  //窗口部件设置
 }
 
 MainWindow::~MainWindow()
@@ -76,10 +99,6 @@ void MainWindow::WindowStyle()
 	this->setFixedSize(this->width(),700);
 
 	//this->setAttribute(Qt::WA_TranslucentBackground, true);  //设置主窗口透明
-
-	//设置背景默认图片
-	QString backpic = "background1";
-	setBk(backpic);
 
 	//设置播放方式下拉框
 	ui->play_model->setView(new QListView());
@@ -118,6 +137,20 @@ void MainWindow::WindowStyle()
 
 	//设置播放进度条点击slider即到
 	ui->play_progress_bar->installEventFilter(this);
+
+	//设置音量按钮初始化状态
+	vol_change = true;
+
+	//歌曲数量更新开始
+	songs_time->start(1000);
+	song_tips->start(200);
+
+	ui->widget_search->raise();   //查找界面位于最上层
+	ui->widget_search->hide();    //查找界面隐藏
+
+	//读取配置文件
+	readConfig();
+
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -150,6 +183,7 @@ void MainWindow::minWindow()
 
 void MainWindow::closeWindow()
 {
+	saveList();            //退出前保存
 	//界面淡出关闭
 	QPropertyAnimation *animation = new QPropertyAnimation(this, "windowOpacity");
 	animation->setDuration(1000);
@@ -174,8 +208,8 @@ void MainWindow::backPicshow()
 
 void MainWindow::backChange(QString id)
 {
-	QString backpicname = QString("background") + id;
-	setBk(backpicname);
+	back_pic = QString("background") + id;
+	setBk(back_pic);
 }
 
 void MainWindow::setBk(QString picname)
@@ -191,61 +225,69 @@ void MainWindow::playOrsuspend()
 	{
 		ui->play_or_suspend->setStyleSheet("QToolButton{border-image: url(:/images/image/play_hover.png);}QToolTip{background-color:white}");
 		ui->play_or_suspend->setToolTip(QStringLiteral("播放"));
-		is_play = false;
+		is_play = !is_play;
+		if (player->state() == QMediaPlayer::PlayingState)  //正在播放
+		{
+			player->pause();
+		}
 	}
 	else
 	{
 		ui->play_or_suspend->setStyleSheet("QToolButton{border-image: url(:/images/image/pause_hover.png);}QToolTip{background-color:white}");
 		ui->play_or_suspend->setToolTip(QStringLiteral("暂停"));
-		is_play = true;
+		is_play = !is_play;
+		if (player->isAudioAvailable() == true)            
+		{
+			player->play();
+		}
 	}
+}
+
+void MainWindow::lastSong()
+{
+	if (player->isAudioAvailable() == true)           //有音乐输出
+	{
+		mytable->mysetLast();
+		player->setMedia(mytable->myCurrentMedia());
+	}
+	player->play();
+}
+
+void MainWindow::nextSong()
+{
+	if (player->isAudioAvailable() == true)           //有音乐输出
+	{
+		mytable->mysetNext();
+		player->setMedia(mytable->myCurrentMedia());
+	}
+	player->play();
 }
 
 void MainWindow::volPicchange(int vol)
 {
 	if (vol == 0)
 	{
-		ui->volume_label->setStyleSheet("QLabel{background-color:transparent;}QLabel{border-image:url(:/images/image/volume_shut.png);}");
+		ui->volume_label->setStyleSheet("QToolButton{background-color:transparent;}QToolButton{border-image:url(:/images/image/volume_shut.png);}");
 	}
 	else if (vol < 70)
 	{
-		ui->volume_label->setStyleSheet("QLabel{background-color:transparent;}QLabel{border-image:url(:/images/image/volume_step.png);}");
+		ui->volume_label->setStyleSheet("QToolButton{background-color:transparent;}QToolButton{border-image:url(:/images/image/volume_step.png);}");
 	}
 	else
 	{
-		ui->volume_label->setStyleSheet("QLabel{background-color:transparent;}QLabel{border-image:url(:/images/image/volume.png);}");
+		ui->volume_label->setStyleSheet("QToolButton{background-color:transparent;}QToolButton{border-image:url(:/images/image/volume.png);}");
 	}
 	QToolTip::showText(QCursor::pos(), QString::number(vol));     //通过vol的slidetmove得到这个值用于传值给tooltip实时显示
 }
 
 void MainWindow::playModelchange(int index)
 {
-	if (index == 0)
-	{
-		play_model = "play_order";
-	}
-	else if (index == 1)
-	{
-		play_model = "single_cycle";
-	}
-	else
-	{
-		play_model = "random_play";
-	}
-	qDebug() << play_model;
-	
+	play_model = index;
 	mytable->nowmode = index;
 }
 
 void MainWindow::songNameshow()
 {
-	//static int npos = 0;
-	//if (npos > song_name.length())
-	//{
-	//	npos = 0;
-	//}
-	//ui->song_show->setText(song_name.mid(npos));
-	//npos++;
 	int isize = song_name.size();
 	if (curindex < 0)
 	{
@@ -254,7 +296,7 @@ void MainWindow::songNameshow()
 	song_name_copy = song_name;
 	if (song_name.size() < 22)
 	{
-		for (int i = 0; i < 25 ; ++i)
+		for (int i = 0; i < 36-song_name.size() ; ++i)
 		{
 			song_name_copy = " " + song_name_copy;
 		}
@@ -268,6 +310,11 @@ void MainWindow::mytableDoubleclick(QTableWidgetItem *item)
 
 	mytable->mysetCurrentMeida(item->row());
 	player->setMedia(mytable->myCurrentMedia());
+	player->setVolume(0);           //初始播放无声音
+	ui->play_or_suspend->setStyleSheet("QToolButton{border-image: url(:/images/image/pause_hover.png);}QToolTip{background-color:white}");
+	ui->play_or_suspend->setToolTip(QStringLiteral("暂停"));    //设置播放按钮改变
+	is_play = !is_play;
+
 	player->play();
 }
 
@@ -368,6 +415,12 @@ void MainWindow::saveList()
 	file.open(QIODevice::WriteOnly | QIODevice::Text);
 	mytable->plist->save(&file, "m3u");
 	file.close();
+    
+	QSettings *m_set_ini = new QSettings("config.ini", QSettings::IniFormat);
+	m_set_ini->setValue("/background/backpic", back_pic);
+	m_set_ini->setValue("/volume/vol", player->volume());
+	m_set_ini->setValue("/playmodel/index",play_model);
+	delete m_set_ini;
 }
 
 void MainWindow::aboutApp()
@@ -422,7 +475,7 @@ void MainWindow::closeLrc()
 
 void MainWindow::addFile()
 {
-	static QString initfilename = "G:/";  //设置默认路径
+	static QString initfilename = "G:/saddog/song_list/";  //设置默认路径
 	QStringList files = QFileDialog::getOpenFileNames(this, QStringLiteral("选择文件"), initfilename, tr("*.mp3"));  //获取打开文件路径
 	if (files.isEmpty())
 	{
@@ -461,7 +514,178 @@ void MainWindow::addFile()
 	ui->listWidget->setCurrentRow(1);   //跳回播放列表
 }
 
+void MainWindow::searchSong()
+{
+	if (ui->widget_search->isHidden())
+	{
+		ui->widget_search->show();
+		ui->listWidget->setCurrentRow(1);
+	}
+	else
+	{
+		ui->widget_search->hide();
+		ui->search_lineEdit->clear();
+		ui->listWidget->setCurrentRow(1);
+	}
+}
+
+void MainWindow::searchItems(QString search_word)
+{
+	int count = mytable->rowCount();
+	for (int i = 0; i < count; i++)
+	{
+		mytable->setRowHeight(i, 0);
+		if (mytable->item(i, 0)->text().contains(search_word) || mytable->item(i, 1)->text().contains(search_word))
+		{
+			mytable->setRowHeight(i, 30);
+			continue;
+		}
+		if (search_word == "")
+		{
+			mytable->setRowHeight(i, 30);
+		}
+	}
+}
+
+void MainWindow::searchClose()
+{
+	ui->search_lineEdit->setText("");
+	QTableWidgetItem *item = mytable->item(mytable->nowindex, 0);
+	mytable->setCurrentItem(item);
+	mytable->scrollToItem(item);
+	ui->widget_search->hide();
+}
+
 void MainWindow::setPosition(int pos)
 {
 	player->setPosition(pos);
 }
+
+void MainWindow::positionChanged(qint64 pos)
+{
+	ui->play_progress_bar->setValue(pos);    //进度条初始化
+	QTime currentTime(0, (pos / 60000) % 60, (pos / 1000) % 60);     //设置实时改变播放信息
+	QString format = "mm:ss";
+	currentTime.toString(format);
+	QString todisplay;
+	todisplay = currentTime.toString(format);
+	ui->time_show->setText(todisplay + "/" + play_time);
+	qint64 total_time_value = player->duration();                //直接获取该音频文件总时长  单位为毫秒
+	//...........
+
+}
+
+void MainWindow::durationChanged(qint64 pos)
+{
+	ui->play_progress_bar->setRange(0, pos);      //设置值的取值范围
+	QTime total_time(0, (pos / 60000) % 60, (pos / 1000) % 60);
+	QString format = "mm:ss";
+	total_time.toString(format);
+	play_time = total_time.toString(format);
+}
+
+void MainWindow::volChanged()
+{
+	if (vol_change == true)
+	{
+		vol = player->volume();
+		ui->volume_label->setStyleSheet("QToolButton{ background - color:transparent; }QToolButton{ border - image:url(: / images / image / volume_shut.png); }");
+		ui->volume_progress_bar->setValue(0);
+	}
+	else
+	{
+		ui->volume_label->setStyleSheet("QToolButton{ background - color:transparent; }QToolButton{ border - image:url(: / images / image / volume.png); }");
+		player->setVolume(vol);
+		ui->volume_progress_bar->setValue(vol);
+	}
+	vol_change = !vol_change;
+}
+
+void MainWindow::showSongnum()
+{
+	//检查歌曲数目
+	int songcount = mytable->rowCount();
+	ui->label_4->setText(QStringLiteral("歌曲数:") + QString::number(songcount));   //更新歌曲数
+}
+
+void MainWindow::showTips()
+{
+	if (!player->isAudioAvailable())              //不能获取音乐
+	{
+		ui->play_progress_bar->setMaximum(0);
+	}
+	//显示提示信息
+	if (mytable->rowCount() == 0)
+	{
+		addtips->show();
+	}
+	else
+	{
+		addtips->hide();
+	}
+}
+
+void MainWindow::showPlaylabel(QMediaContent media)
+{
+	QFile file(media.canonicalUrl().toString());
+	QFileInfo info(file);
+	QString name = info.baseName();
+	song_name = name;
+}
+
+void MainWindow::readConfig()
+{
+	//读取config.ini及plist.m3u进行设置
+	QSettings *read_ini = new QSettings("config.ini", QSettings::IniFormat);
+	back_pic = read_ini->value("/background/backpic").toString();
+	if (back_pic.split("g")[0] != "back")
+	{
+		back_pic = "background1";
+	}
+	setBk(back_pic);
+	int vol_old = read_ini->value("/volume/vol").toInt();
+	ui->volume_progress_bar->setValue(vol_old);
+	int play_old = read_ini->value("/playmodel/index").toInt();
+	delete read_ini;
+
+	QFile file1("plist.m3u");
+	if (file1.exists())  //文件存在
+	{
+		file1.open(QIODevice::ReadOnly | QIODevice::Text);
+		mytable->plist->load(&file1, "m3u");
+	}
+	file1.close();
+	QFile file2("plist.m3u");
+	file2.open(QIODevice::ReadOnly | QIODevice::Text);
+	int songcount = mytable->plist->mediaCount();
+	QTextStream textinput(&file2);
+	int i = 0;
+	while (i < songcount)
+	{
+		QString songurl = textinput.readLine();
+		QFile *file = new QFile(songurl);
+		QFileInfo info(*file);
+		QString barename = info.baseName();
+		QString songname;
+		QString singer;
+		if (!barename.contains("-"))
+		{
+			songname = barename;
+			singer = " ";
+		}
+		else
+		{
+			QStringList songlist = barename.split("-");
+			singer = songlist.at(0);
+			songname = songlist.at(1);
+		}
+		int rowcount = mytable->rowCount();
+		mytable->insertRow(rowcount);
+		mytable->setItem(rowcount, 0, new QTableWidgetItem(songname));
+		mytable->setItem(rowcount, 1, new QTableWidgetItem(singer));
+		mytable->item(rowcount, 1)->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+		i++;
+	}
+	file2.close();
+}
+

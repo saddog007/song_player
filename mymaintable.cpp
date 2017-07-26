@@ -40,8 +40,7 @@ Mymaintable::Mymaintable(QWidget *parent) : QTableWidget(parent)
 	opacityEffect->setOpacity(0.5);
 
 	QScrollBar *vbar = this->verticalScrollBar();
-	vbar->setContextMenuPolicy(Qt::NoContextMenu);//"QScrollBar::handle{}"
-	//
+	vbar->setContextMenuPolicy(Qt::NoContextMenu);
 	vbar->setStyleSheet("QScrollBar{background:white; width: 10px;margin: 10px 0 10px 0;}"
 		"QScrollBar::handle{background:light gray;border-radius:5px;}"
 		"QScrollBar::handle:hover{background: rgb(55,55,55);}"
@@ -80,8 +79,8 @@ Mymaintable::Mymaintable(bool second)
 	setHorizontalHeaderLabels(list);
 	QHeaderView *header = this->horizontalHeader();//调整大小
 	header->setStyleSheet("QHeaderView::section{background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(46,46,46),stop:1 rgb(66,66,66));color: rgb(210,210,210);border: 1px solid #383838;}");//
-	header->resizeSection(0, 80);
-	header->resizeSection(1, 60);
+	header->resizeSection(0, 100);
+	header->resizeSection(1, 80);
 	header->setStretchLastSection(true);//延展最一个表头
 	header->setSectionResizeMode(QHeaderView::Fixed);//不能更改列宽
 	this->horizontalHeaderItem(0)->setTextAlignment(Qt::AlignLeft);//第一列表头对齐方式
@@ -116,6 +115,33 @@ void Mymaintable::mysetNext()
 		nowindex = x;
 		QTableWidgetItem *item = this->item(nowindex, 0);
 		this->setCurrentItem(item);
+	}
+}
+void Mymaintable::mysetLast()
+{
+	if (nowmode == 0)
+	{
+		if (nowindex == 0)//顺序列表播放头上再按上一曲， 从头播放第一首
+		{
+			nowindex = 0;
+			return;
+		}
+		nowindex -= 1;
+		QTableWidgetItem *item = this->item(nowindex, 0);
+		this->setCurrentItem(item);
+	}
+	if (nowmode == 1)
+	{
+		return;
+	}
+	if (nowmode == 2)
+	{
+		QTime time;
+		time = QTime::currentTime();
+		qsrand(time.msec() + time.second() * 1000);
+		int xxx = qrand() % plist->mediaCount();
+		nowindex = xxx;
+		this->setCurrentCell(nowindex, 0);
 	}
 }
 

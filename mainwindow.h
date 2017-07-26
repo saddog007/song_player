@@ -16,6 +16,8 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QSettings>
+#include <string>
 #include "backpic.h"
 #include "mymaintable.h"
 
@@ -34,10 +36,14 @@ public:
 	BackPic *backpic;
 	QMediaPlayer *player;
 	QTimer *m_timer;
+	QTimer *songs_time;
+	QTimer *song_tips;
 	QStackedWidget *stack;
 	Mymaintable *mytable;
 	QSystemTrayIcon *trayicon;
-	
+	QLabel *addtips;
+	QString play_time;    //歌曲已经播放的时间
+
 public slots:
 	void backChange(QString id);   //界面改变id信号
 	void volPicchange(int vol);   //音量图片改变
@@ -66,7 +72,18 @@ private slots:
 	void closeLrc();  //系统托盘关闭歌词
 	void addFile();   //添加歌曲函数
 	void setPosition(int);     //播放进度改变触发函数
-	
+	void positionChanged(qint64);   //获取歌曲时长并显示，获取歌词状态并匹配
+	void durationChanged(qint64);    //获取当前播放的进度时间
+	void volChanged();              //静音与恢复函数
+	void showSongnum();             //实时显示歌曲数量函数
+	void showTips();               //无歌提示
+	void lastSong();            //上一曲
+	void nextSong();           //下一曲
+	void showPlaylabel(QMediaContent);       //显示正在播放的歌曲
+	void readConfig();            //读取配置文件
+	void searchSong();           //查找歌曲按钮
+	void searchClose();          //关闭查找
+	void searchItems(QString);        //查找函数
 
 private:
     Ui::MainWindow *ui;
@@ -79,7 +96,10 @@ private:
 	QString song_name;   //当前播放歌曲名字
 	int curindex = 0;          //滚动变量
 	QString song_name_copy;    //歌曲拷贝
-	QString play_model;  //播放模式
+	int play_model;  //播放模式
+	bool vol_change;      //音量按钮改变  静音或者恢复
+	int vol;             //用于音量按钮静音与恢复
+	QString back_pic;       //保存背景图片
 };
 
 #endif // MAINWINDOW_H

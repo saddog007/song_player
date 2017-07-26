@@ -15,7 +15,8 @@ public:
 	Mymaintable(bool second);   //第二构造函数
 	QUrl myCurrentMedia();      //播放的歌曲链接
 	void mysetCurrentMeida(int);  //播放的歌曲偏移量
-	void mysetNext();
+	void mysetNext();            //下一曲播放
+	void mysetLast();             //上一曲播放
 
 	QMediaPlaylist *plist;
 

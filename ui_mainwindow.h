@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'mainwindowgP8232.ui'
+** Form generated from reading UI file 'mainwindowp12444.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef MAINWINDOWGP8232_H
-#define MAINWINDOWGP8232_H
+#ifndef MAINWINDOWP12444_H
+#define MAINWINDOWP12444_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -44,7 +44,6 @@ public:
     QLabel *label_3;
     QCheckBox *lyrics_check;
     QSlider *volume_progress_bar;
-    QLabel *volume_label;
     QLabel *label_4;
     QFrame *line;
     QListWidget *listWidget;
@@ -66,6 +65,7 @@ public:
     QLabel *label_5;
     QLineEdit *search_lineEdit;
     QToolButton *search_close;
+    QToolButton *volume_label;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -148,12 +148,6 @@ public:
         volume_progress_bar->setObjectName(QStringLiteral("volume_progress_bar"));
         volume_progress_bar->setGeometry(QRect(240, 99, 80, 20));
         volume_progress_bar->setOrientation(Qt::Horizontal);
-        volume_label = new QLabel(centralWidget);
-        volume_label->setObjectName(QStringLiteral("volume_label"));
-        volume_label->setGeometry(QRect(217, 99, 20, 20));
-        volume_label->setStyleSheet(QLatin1String("border-image: url(:/images/image/volume_step.png);\n"
-"border-image: url(:/images/image/volume.png);\n"
-"border-image: url(:/images/image/volume_shut.png);"));
         label_4 = new QLabel(centralWidget);
         label_4->setObjectName(QStringLiteral("label_4"));
         label_4->setGeometry(QRect(5, 670, 80, 20));
@@ -314,7 +308,15 @@ public:
         horizontalLayout->setStretch(0, 1);
         horizontalLayout->setStretch(1, 10);
         horizontalLayout->setStretch(2, 1);
+        volume_label = new QToolButton(centralWidget);
+        volume_label->setObjectName(QStringLiteral("volume_label"));
+        volume_label->setGeometry(QRect(217, 99, 20, 20));
+        volume_label->setStyleSheet(QLatin1String("border-image: url(:/images/image/volume_step.png);\n"
+"border-image: url(:/images/image/volume.png);\n"
+"border-image: url(:/images/image/volume_shut.png);"));
+        volume_label->setAutoRaise(true);
         MainWindow->setCentralWidget(centralWidget);
+        widget_search->raise();
         listWidget->raise();
         layoutWidget->raise();
         label->raise();
@@ -324,7 +326,6 @@ public:
         label_3->raise();
         lyrics_check->raise();
         volume_progress_bar->raise();
-        volume_label->raise();
         label_4->raise();
         line->raise();
         line_5->raise();
@@ -340,9 +341,7 @@ public:
         playmode_btn->raise();
         play_model->raise();
         song_show->raise();
-        label_5->raise();
-        search_lineEdit->raise();
-        search_close->raise();
+        volume_label->raise();
 
         retranslateUi(MainWindow);
 
@@ -360,7 +359,6 @@ public:
         time_show->setText(QApplication::translate("MainWindow", "00:00/00:00", 0));
         label_3->setText(QString());
         lyrics_check->setText(QApplication::translate("MainWindow", "\346\255\214\350\257\215", 0));
-        volume_label->setText(QString());
         label_4->setText(QApplication::translate("MainWindow", "\346\255\214\346\233\262\346\225\260:0", 0));
 
         const bool __sortingEnabled = listWidget->isSortingEnabled();
@@ -394,6 +392,7 @@ public:
         label_5->setText(QString());
         search_lineEdit->setPlaceholderText(QApplication::translate("MainWindow", "\346\237\245\346\211\276\345\210\227\350\241\250\346\255\214\346\233\262", 0));
         search_close->setText(QString());
+        volume_label->setText(QString());
     } // retranslateUi
 
 };
@@ -404,4 +403,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // MAINWINDOWGP8232_H
+#endif // MAINWINDOWP12444_H
