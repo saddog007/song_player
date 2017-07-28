@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'mainwindowp12444.ui'
+** Form generated from reading UI file 'mainwindowp16240.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef MAINWINDOWP12444_H
-#define MAINWINDOWP12444_H
+#ifndef MAINWINDOWP16240_H
+#define MAINWINDOWP16240_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -61,7 +61,6 @@ public:
     QComboBox *play_model;
     QLabel *song_show;
     QWidget *widget_search;
-    QHBoxLayout *horizontalLayout;
     QLabel *label_5;
     QLineEdit *search_lineEdit;
     QToolButton *search_close;
@@ -147,6 +146,7 @@ public:
         volume_progress_bar = new QSlider(centralWidget);
         volume_progress_bar->setObjectName(QStringLiteral("volume_progress_bar"));
         volume_progress_bar->setGeometry(QRect(240, 99, 80, 20));
+        volume_progress_bar->setStyleSheet(QStringLiteral(""));
         volume_progress_bar->setOrientation(Qt::Horizontal);
         label_4 = new QLabel(centralWidget);
         label_4->setObjectName(QStringLiteral("label_4"));
@@ -189,7 +189,7 @@ public:
         listWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
         line_5 = new QFrame(centralWidget);
         line_5->setObjectName(QStringLiteral("line_5"));
-        line_5->setGeometry(QRect(329, 191, 2, 451));
+        line_5->setGeometry(QRect(329, 191, 2, 431));
         QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Minimum);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -199,7 +199,7 @@ public:
         line_5->setFrameShape(QFrame::VLine);
         line_6 = new QFrame(centralWidget);
         line_6->setObjectName(QStringLiteral("line_6"));
-        line_6->setGeometry(QRect(0, 641, 330, 2));
+        line_6->setGeometry(QRect(0, 622, 330, 2));
         QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Minimum);
         sizePolicy2.setHorizontalStretch(0);
         sizePolicy2.setVerticalStretch(0);
@@ -209,14 +209,14 @@ public:
         line_6->setFrameShape(QFrame::HLine);
         line_7 = new QFrame(centralWidget);
         line_7->setObjectName(QStringLiteral("line_7"));
-        line_7->setGeometry(QRect(88, 192, 2, 451));
+        line_7->setGeometry(QRect(88, 192, 2, 431));
         sizePolicy1.setHeightForWidth(line_7->sizePolicy().hasHeightForWidth());
         line_7->setSizePolicy(sizePolicy1);
         line_7->setFrameShadow(QFrame::Plain);
         line_7->setFrameShape(QFrame::VLine);
         line_2 = new QFrame(centralWidget);
         line_2->setObjectName(QStringLiteral("line_2"));
-        line_2->setGeometry(QRect(0, 0, 1, 642));
+        line_2->setGeometry(QRect(0, 0, 1, 623));
         line_2->setFrameShadow(QFrame::Plain);
         line_2->setFrameShape(QFrame::VLine);
         play_or_suspend = new QToolButton(centralWidget);
@@ -266,6 +266,7 @@ public:
         font1.setWeight(50);
         play_model->setFont(font1);
         play_model->setStyleSheet(QLatin1String("background-color: rgba(255, 255, 255, 0);\n"
+"color: rgb(255, 255, 255);\n"
 "border-color: rgba(255, 255, 255, 0);\n"
 "selection-background-color: rgba(255, 255, 255, 0);\n"
 "QToolTip{background-color:white;color:black;};\n"
@@ -279,35 +280,22 @@ public:
 "color: rgb(255, 255, 255);"));
         widget_search = new QWidget(centralWidget);
         widget_search->setObjectName(QStringLiteral("widget_search"));
-        widget_search->setGeometry(QRect(90, 620, 240, 23));
-        horizontalLayout = new QHBoxLayout(widget_search);
-        horizontalLayout->setSpacing(0);
-        horizontalLayout->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        widget_search->setGeometry(QRect(90, 622, 241, 20));
+        widget_search->setStyleSheet(QStringLiteral(""));
         label_5 = new QLabel(widget_search);
         label_5->setObjectName(QStringLiteral("label_5"));
+        label_5->setGeometry(QRect(0, 0, 20, 20));
         label_5->setStyleSheet(QStringLiteral("border-image: url(:/images/image/search_16.ico);"));
-
-        horizontalLayout->addWidget(label_5);
-
         search_lineEdit = new QLineEdit(widget_search);
         search_lineEdit->setObjectName(QStringLiteral("search_lineEdit"));
+        search_lineEdit->setGeometry(QRect(20, 1, 197, 20));
         search_lineEdit->setStyleSheet(QStringLiteral("background-color:transparent;"));
-
-        horizontalLayout->addWidget(search_lineEdit);
-
         search_close = new QToolButton(widget_search);
         search_close->setObjectName(QStringLiteral("search_close"));
+        search_close->setGeometry(QRect(218, 0, 20, 20));
         search_close->setStyleSheet(QLatin1String("border-image: url(:/images/image/searchclose.ico);\n"
 "background-color:transparent;"));
         search_close->setAutoRaise(true);
-
-        horizontalLayout->addWidget(search_close);
-
-        horizontalLayout->setStretch(0, 1);
-        horizontalLayout->setStretch(1, 10);
-        horizontalLayout->setStretch(2, 1);
         volume_label = new QToolButton(centralWidget);
         volume_label->setObjectName(QStringLiteral("volume_label"));
         volume_label->setGeometry(QRect(217, 99, 20, 20));
@@ -403,4 +391,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // MAINWINDOWP12444_H
+#endif // MAINWINDOWP16240_H

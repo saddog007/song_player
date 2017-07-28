@@ -17,6 +17,7 @@ public:
 	void mysetCurrentMeida(int);  //播放的歌曲偏移量
 	void mysetNext();            //下一曲播放
 	void mysetLast();             //上一曲播放
+	void myDelitem(int);         //删除歌曲
 
 	QMediaPlaylist *plist;
 

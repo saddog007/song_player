@@ -23,7 +23,7 @@ Mymaintable::Mymaintable(QWidget *parent) : QTableWidget(parent)
 	setSelectionBehavior(QAbstractItemView::SelectRows);
 	setSelectionMode(QAbstractItemView::SingleSelection);
 	setAcceptDrops(true);
-	setGeometry(90, 192, 240, 451);//ÇøÓò
+	setGeometry(90, 192, 240, 431);//ÇøÓò
 
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	this->insertColumn(0);
@@ -147,7 +147,7 @@ void Mymaintable::mysetLast()
 
 void Mymaintable::listentered(int row, int column)
 {
-	qDebug() << row << column;
+	//qDebug() << row << column;
 }
 
 void Mymaintable::currentitemch(QTableWidgetItem*, QTableWidgetItem*)
@@ -195,4 +195,31 @@ void Mymaintable::mysetCurrentMeida(int nosong)
 QUrl Mymaintable::myCurrentMedia()
 {
 	return plist->media(nowindex).canonicalUrl();
+}
+
+void Mymaintable::myDelitem(int index)
+{
+	if (index < nowindex)
+	{
+		plist->removeMedia(index);
+		nowindex--;
+		QTableWidgetItem *item = this->item(nowindex, 0);
+		this->setCurrentItem(item);
+		return;
+	}
+	if (index == nowindex)
+	{
+		plist->removeMedia(index);
+		nowindex++;
+		QTableWidgetItem *item = this->item(nowindex, 0);
+		this->setCurrentItem(item);
+		return;
+	}
+	if (index > nowindex)
+	{
+		plist->removeMedia(index);
+		QTableWidgetItem *item = this->item(nowindex, 0);
+		this->setCurrentItem(item);
+		return;
+	}
 }

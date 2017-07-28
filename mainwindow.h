@@ -18,6 +18,7 @@
 #include <QFileDialog>
 #include <QSettings>
 #include <string>
+#include <QTextEdit>
 #include "backpic.h"
 #include "mymaintable.h"
 
@@ -42,7 +43,11 @@ public:
 	Mymaintable *mytable;
 	QSystemTrayIcon *trayicon;
 	QLabel *addtips;
+	QMenu *right_press;
+	QTextEdit *lrcshowedit;
+
 	QString play_time;    //歌曲已经播放的时间
+	int list_opacity;     //保存列表透明度
 
 public slots:
 	void backChange(QString id);   //界面改变id信号
@@ -62,6 +67,7 @@ private slots:
 	void playModelchange(int);            //播放模式选择
 	void songNameshow();       //歌曲名滚动显示函数
 	void mytableDoubleclick(QTableWidgetItem *);  //右边界面双击选择播放
+	void mytableClicked(QTableWidgetItem*);        //单击选择歌曲
 	void systemIcon();              //设置系统图标
 	void openWindows();             //系统图标打开界面函数
 	void saveList();                //退出前保存函数
@@ -84,6 +90,17 @@ private slots:
 	void searchSong();           //查找歌曲按钮
 	void searchClose();          //关闭查找
 	void searchItems(QString);        //查找函数
+	void setListopa(int);           //设置列表透明度
+	void showContextmenu(const QPoint&);         //mytable右键点击响应函数
+	void showlrcMenu(const QPoint&);            //歌词界面右键函数
+	void delItem();               //删除歌曲
+	void emptyList();             //清空列表
+	void songItem();         //定位歌曲
+	void openList();         //打开文件位置
+	void searchLrc();        //搜索歌词
+	void copyLrc();          //拷贝歌词
+	void openLrc();          //打开歌词
+	void autoNextsong(QMediaPlayer::MediaStatus);           //一曲播完下一曲函数
 
 private:
     Ui::MainWindow *ui;

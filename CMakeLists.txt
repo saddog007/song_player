@@ -18,11 +18,13 @@ set  (DEMO_SRC
     ${SONGPLAYER_ROOT}/src/backpic.h
     ${SONGPLAYER_ROOT}/src/mainwindow.h
     ${SONGPLAYER_ROOT}/src/mymaintable.h
+    ${SONGPLAYER_ROOT}/src/mylrc.h
 
     ${SONGPLAYER_ROOT}/src/main.cpp
     ${SONGPLAYER_ROOT}/src/backpic.cpp
     ${SONGPLAYER_ROOT}/src/mainwindow.cpp
     ${SONGPLAYER_ROOT}/src/mymaintable.cpp
+    ${SONGPLAYER_ROOT}/src/mylrc.cpp
 )
 
 

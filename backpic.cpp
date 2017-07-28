@@ -37,6 +37,13 @@ BackPic::BackPic(QWidget *parent) :
 
 	connect(signalmapper, SIGNAL(mapped(QString)), this, SIGNAL(back_pic_id(QString)));
 	connect(ui->close_btn, SIGNAL(clicked()), this, SLOT(close_window()));
+
+	//设置列表透明度
+	ui->horizontalSlider->setMaximum(255);
+	ui->horizontalSlider->setMinimum(0);
+	ui->horizontalSlider->installEventFilter(this);
+	connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SIGNAL(list_bk_trans(int)));
+	ui->horizontalSlider->setValue(150);
 }
 
 BackPic::~BackPic()
@@ -47,4 +54,9 @@ BackPic::~BackPic()
 void BackPic::close_window()
 {
 	this->close();
+}
+
+void BackPic::setSlidervalue(int value)
+{
+	ui->horizontalSlider->setValue(value);
 }

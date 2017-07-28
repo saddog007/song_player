@@ -20,9 +20,11 @@ public:
 
 public slots:
 	void close_window();
+	void setSlidervalue(int value);  //设置透明度进度条
 
 signals:
 	void back_pic_id(QString);
+	void list_bk_trans(int);         //列表透明度
 
 private:
     Ui::BackPic *ui;

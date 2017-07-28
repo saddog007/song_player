@@ -213,6 +213,9 @@ font: 10pt &quot;微软雅黑&quot;;</string>
       <height>20</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
     </property>
@@ -349,7 +352,7 @@ color: rgb(255, 255, 255);</string>
       <x>329</x>
       <y>191</y>
       <width>2</width>
-      <height>451</height>
+      <height>431</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -369,7 +372,7 @@ color: rgb(255, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>641</y>
+      <y>622</y>
       <width>330</width>
       <height>2</height>
      </rect>
@@ -393,7 +396,7 @@ color: rgb(255, 255, 255);</string>
       <x>88</x>
       <y>192</y>
       <width>2</width>
-      <height>451</height>
+      <height>431</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -415,7 +418,7 @@ color: rgb(255, 255, 255);</string>
       <x>0</x>
       <y>0</y>
       <width>1</width>
-      <height>642</height>
+      <height>623</height>
      </rect>
     </property>
     <property name="frameShadow">
@@ -585,6 +588,7 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgba(255, 255, 255, 0);
+color: rgb(255, 255, 255);
 border-color: rgba(255, 255, 255, 0);
 selection-background-color: rgba(255, 255, 255, 0);
 QToolTip{background-color:white;color:black;};
@@ -619,62 +623,66 @@ color: rgb(255, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>620</y>
-      <width>240</width>
-      <height>23</height>
+      <y>622</y>
+      <width>241</width>
+      <height>20</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,10,1">
-     <property name="spacing">
-      <number>0</number>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
      </property>
-     <property name="leftMargin">
-      <number>0</number>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/images/image/search_16.ico);</string>
      </property>
-     <property name="topMargin">
-      <number>0</number>
+     <property name="text">
+      <string/>
      </property>
-     <property name="rightMargin">
-      <number>0</number>
+    </widget>
+    <widget class="QLineEdit" name="search_lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>1</y>
+       <width>197</width>
+       <height>20</height>
+      </rect>
      </property>
-     <property name="bottomMargin">
-      <number>0</number>
+     <property name="styleSheet">
+      <string notr="true">background-color:transparent;</string>
      </property>
-     <item>
-      <widget class="QLabel" name="label_5">
-       <property name="styleSheet">
-        <string notr="true">border-image: url(:/images/image/search_16.ico);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="search_lineEdit">
-       <property name="styleSheet">
-        <string notr="true">background-color:transparent;</string>
-       </property>
-       <property name="placeholderText">
-        <string>查找列表歌曲</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="search_close">
-       <property name="styleSheet">
-        <string notr="true">border-image: url(:/images/image/searchclose.ico);
+     <property name="placeholderText">
+      <string>查找列表歌曲</string>
+     </property>
+    </widget>
+    <widget class="QToolButton" name="search_close">
+     <property name="geometry">
+      <rect>
+       <x>218</x>
+       <y>0</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/images/image/searchclose.ico);
 background-color:transparent;</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="autoRaise">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="autoRaise">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
    <widget class="QToolButton" name="volume_label">
     <property name="geometry">

@@ -13,11 +13,28 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_timer = new QTimer(this);    //设置实现滚动效果的定时器
 	songs_time = new QTimer(this);   //歌曲数目定时器
 	song_tips = new QTimer(this);     //列表歌曲提示信息及无歌设置
+
+	//添加歌词显示界面
+	lrcshowedit = new QTextEdit(this);
+	lrcshowedit->setStyleSheet("QTextEdit{background:transparent}");
+	lrcshowedit->setFrameStyle(QFrame::NoFrame);
+	lrcshowedit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	lrcshowedit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	lrcshowedit->setReadOnly(true);
+	lrcshowedit->setFont(QFont("微软雅黑", 10, QFont::Thin));
+	lrcshowedit->setTextColor(Qt::white);
+	lrcshowedit->setContextMenuPolicy(Qt::CustomContextMenu);
+	lrcshowedit->setFocusPolicy(Qt::NoFocus);
+	lrcshowedit->viewport()->installEventFilter(this);
+	lrcshowedit->viewport()->setCursor(QCursor(QPixmap(":/images/image/cursor_hand.png")));
 	
 	stack = new QStackedWidget(this);
 	mytable = new Mymaintable(stack);   //添加widget
+	stack->addWidget(lrcshowedit);     //添加歌词显示界面
 	stack->addWidget(mytable);        //添加tablewidget主界面
-	stack->setGeometry(90, 192, 240, 451);
+	stack->setGeometry(90, 192, 240, 431);
+
+	mytable->setContextMenuPolicy(Qt::CustomContextMenu);        //右键菜单 
 
 	//列表无歌曲提示信息
 	addtips = new QLabel(QStringLiteral("  点击按钮添加\n或拖动文件到界面"), mytable);
@@ -63,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->play_model, SIGNAL(currentIndexChanged(int)), this, SLOT(playModelchange(int)));     //不同的选项执行不通的事件
 	connect(m_timer, SIGNAL(timeout()), this, SLOT(songNameshow()));                  //滚动显示歌曲名
 	connect(mytable, SIGNAL(itemDoubleClicked(QTableWidgetItem *)), this, SLOT(mytableDoubleclick(QTableWidgetItem*)));   //界面双击播放
+	connect(mytable, SIGNAL(itemClicked(QTableWidgetItem *)), this, SLOT(mytableClicked(QTableWidgetItem*)));            //单击触发函数
 	connect(ui->add_btn, SIGNAL(clicked()), this, SLOT(addFile()));        //添加歌曲函数
 	connect(ui->play_progress_bar, SIGNAL(sliderMoved(int)), this, SLOT(setPosition(int)));   //播放进度改变函数
 	connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));    //获取歌曲时长和歌曲匹配
@@ -74,6 +92,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->search_btn, SIGNAL(clicked()), this, SLOT(searchSong()));      //查找歌曲
 	connect(ui->search_close, SIGNAL(clicked()), this, SLOT(searchClose()));    //关闭查找
 	connect(ui->search_lineEdit, SIGNAL(textChanged(QString)), this, SLOT(searchItems(QString)));  //查找函数
+	connect(backpic, SIGNAL(list_bk_trans(int)), this, SLOT(setListopa(int)));         //设置列表透明度
+	connect(mytable, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextmenu(const QPoint&))); //mytable右键点击响应函数
+	connect(lrcshowedit, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showlrcMenu(const QPoint&))); //歌词界面右键函数
+	connect(ui->listWidget, SIGNAL(currentRowChanged(int)), stack, SLOT(setCurrentIndex(int)));           //左边选择更换右边界面
+	connect(player, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(autoNextsong(QMediaPlayer::MediaStatus)));   //一曲结束自动下一曲
 
 	systemIcon();   //系统图标设置
 	WindowStyle();  //窗口部件设置
@@ -151,6 +174,8 @@ void MainWindow::WindowStyle()
 	//读取配置文件
 	readConfig();
 
+	//初始设置在本地列表界面
+	ui->listWidget->setCurrentRow(1);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -184,6 +209,7 @@ void MainWindow::minWindow()
 void MainWindow::closeWindow()
 {
 	saveList();            //退出前保存
+	ui->close_btn->setEnabled(false);     //禁止连续点击
 	//界面淡出关闭
 	QPropertyAnimation *animation = new QPropertyAnimation(this, "windowOpacity");
 	animation->setDuration(1000);
@@ -236,10 +262,14 @@ void MainWindow::playOrsuspend()
 		ui->play_or_suspend->setStyleSheet("QToolButton{border-image: url(:/images/image/pause_hover.png);}QToolTip{background-color:white}");
 		ui->play_or_suspend->setToolTip(QStringLiteral("暂停"));
 		is_play = !is_play;
-		if (player->isAudioAvailable() == true)            
-		{
-			player->play();
-		}
+		//if (player->isAudioAvailable() == true)
+		//{
+		//	player->play();
+		//}
+		QTableWidgetItem *item = mytable->item(mytable->nowindex, 0);
+		mytable->mysetCurrentMeida(item->row());
+		player->setMedia(mytable->myCurrentMedia());
+		player->play();
 	}
 }
 
@@ -316,6 +346,11 @@ void MainWindow::mytableDoubleclick(QTableWidgetItem *item)
 	is_play = !is_play;
 
 	player->play();
+}
+
+void MainWindow::mytableClicked(QTableWidgetItem*item)
+{
+	mytable->mysetCurrentMeida(item->row());
 }
 
 void MainWindow::systemIcon()
@@ -417,9 +452,10 @@ void MainWindow::saveList()
 	file.close();
     
 	QSettings *m_set_ini = new QSettings("config.ini", QSettings::IniFormat);
-	m_set_ini->setValue("/background/backpic", back_pic);
-	m_set_ini->setValue("/volume/vol", player->volume());
-	m_set_ini->setValue("/playmodel/index",play_model);
+	m_set_ini->setValue("/background/backpic", back_pic);       //背景
+	m_set_ini->setValue("/volume/vol", player->volume());       //音量
+	m_set_ini->setValue("/playmodel/index",play_model);          //播放模式
+	m_set_ini->setValue("/listopa/value", list_opacity);          //列表透明度   
 	delete m_set_ini;
 }
 
@@ -570,8 +606,8 @@ void MainWindow::positionChanged(qint64 pos)
 	QString todisplay;
 	todisplay = currentTime.toString(format);
 	ui->time_show->setText(todisplay + "/" + play_time);
-	qint64 total_time_value = player->duration();                //直接获取该音频文件总时长  单位为毫秒
-	//...........
+	//qint64 total_time_value = player->duration();                //直接获取该音频文件总时长  单位为毫秒
+	//...................
 
 }
 
@@ -646,6 +682,9 @@ void MainWindow::readConfig()
 	int vol_old = read_ini->value("/volume/vol").toInt();
 	ui->volume_progress_bar->setValue(vol_old);
 	int play_old = read_ini->value("/playmodel/index").toInt();
+	int list_opa = read_ini->value("/listopa/value").toInt();
+	setListopa(list_opa);
+	backpic->setSlidervalue(list_opa);
 	delete read_ini;
 
 	QFile file1("plist.m3u");
@@ -689,3 +728,137 @@ void MainWindow::readConfig()
 	file2.close();
 }
 
+void MainWindow::setListopa(int value)
+{
+	list_opacity = value;        //保存列表透明度
+	QString style = "QTableWidget{background-color:rgb(255, 255, 255," + QString::number(value)+");}"
+		"QTableWidget{selection-background-color: rgb(25,65,65,150);padding: -1;}"
+		"QTableWidget{selection-color: rgb(255, 255, 255);}"
+		"QTableWidget{font-size : 12px;color: rgb(55, 55, 55);}";
+	mytable->setStyleSheet(style);
+}
+
+void MainWindow::showContextmenu(const QPoint&pos)
+{
+	QPoint globalPos = mytable->mapToGlobal(pos);
+	right_press = new QMenu(this);
+	right_press->setContentsMargins(1, 1, 1, 4);
+	QAction *songitem = new QAction(QStringLiteral("  歌曲定位"), this);
+	QAction *delsong = new QAction(QStringLiteral("  删除歌曲"), this);
+	QAction *openlist = new QAction(QStringLiteral("  打开文件夹"), this);
+	QAction *emptylist = new QAction(QStringLiteral("  清空列表"), this);
+	if (mytable->itemAt(mytable->mapFromGlobal(QCursor::pos())) != NULL)   //选定的有歌曲
+	{
+		right_press->addAction(songitem);
+		right_press->addAction(delsong);
+		right_press->addAction(openlist);
+	}
+	right_press->addAction(emptylist);                //空白地方也可清空列表
+	connect(songitem, SIGNAL(triggered()), this, SLOT(songItem()));
+	connect(delsong, SIGNAL(triggered()), this, SLOT(delItem()));
+	connect(openlist, SIGNAL(triggered()), this, SLOT(openList()));
+	connect(emptylist, SIGNAL(triggered()), this, SLOT(emptyList()));
+	right_press->exec(globalPos);               //以点击位置为起点显示
+}
+
+void MainWindow::songItem()
+{
+	QTableWidgetItem *item = mytable->item(mytable->nowindex, 0);
+	mytable->setCurrentItem(item);
+	mytable->scrollToItem(item);
+}
+
+void MainWindow::delItem()
+{
+	int index = mytable->currentRow();          //当前选择偏移量
+	if (index == mytable->nowindex)           //如果选择为当前播放歌曲
+	{
+		mytable->mysetNext();            //播放下一首
+		player->setMedia(mytable->plist->media(mytable->nowindex));
+		player->play();
+	}
+	mytable->myDelitem(index);
+	mytable->removeRow(index);
+}
+
+void MainWindow::openList()
+{
+	QUrl url = mytable->plist->media(mytable->currentRow()).canonicalUrl();  //获取地址
+	QString fileall = url.toLocalFile();
+	fileall.replace("/", "\\");           //切换斜线
+	QString heads = "/select,";
+	QString selectfile = heads + fileall;            
+	LPCTSTR str = selectfile.toLocal8Bit().constData();
+	ShellExecuteA(0, "open", "explorer.exe", str, NULL, true);        //利用windows自带explorer文档管理器打开文件所在位置
+}
+
+void MainWindow::emptyList()
+{
+	if (player->isAudioAvailable() == true)
+	{
+		playOrsuspend();           //改变按钮形式
+	}
+	player->pause();
+	player->stop();
+	player->dumpObjectInfo();
+	mytable->setRowCount(0);
+	mytable->plist->clear();
+	mytable->clearContents();         //清理连接
+	song_name = "";
+	ui->time_show->clear();
+	ui->time_show->setText("00:00/00:00");
+}
+
+void MainWindow::showlrcMenu(const QPoint&)
+{
+	QMenu *menu = new QMenu(this);
+	menu->setContentsMargins(1, 1, 1, 4);
+	QAction *searchlrc = new QAction(QStringLiteral("手动搜索歌词"),this);
+	QAction *openlrc = new QAction(QStringLiteral("打开以保存歌词"), this);
+	QAction *copylrc = new QAction(QStringLiteral("复制全部歌词"), this);
+	menu->addAction(searchlrc);
+	menu->addAction(openlrc);
+	menu->addAction(copylrc);
+
+	if (player->currentMedia().canonicalUrl().toString() == NULL)         //没有播放的歌曲
+	{
+		searchlrc->setDisabled(true);
+	}
+	else
+	{
+		searchlrc->setEnabled(true);
+	}
+	connect(searchlrc, SIGNAL(triggered()), this, SLOT(searchLrc()));
+	connect(openlrc, SIGNAL(triggered()), this, SLOT(openLrc()));
+	connect(copylrc, SIGNAL(triggered()), this, SLOT(copyLrc()));
+	menu->exec(QCursor::pos());
+}
+
+void MainWindow::searchLrc()
+{
+
+}
+
+void MainWindow::openLrc()
+{
+	QString path("G://saddog//song_lyrics");
+	QDesktopServices open;
+	open.openUrl(QUrl(path));
+}
+
+void MainWindow::copyLrc()
+{
+	lrcshowedit->selectAll();
+	lrcshowedit->copy();
+	QToolTip::showText(QCursor::pos(), QStringLiteral("已复制到粘贴板"));
+}
+
+void MainWindow::autoNextsong(QMediaPlayer::MediaStatus start)
+{
+	if (start == QMediaPlayer::EndOfMedia)
+	{
+		mytable->mysetNext();
+		player->setMedia(mytable->myCurrentMedia());
+		player->play();
+	}
+}
